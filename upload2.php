@@ -7,14 +7,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
     <title>Subir archivos al servidor</title>
-    <meta name ="author" content ="Norfi Carrodeguas">
-    
+        
     <style type="text/css" media="screen">
         body{font-size:1.2em;}
     </style>
             
-</head>
-    
+</head>    
 <body>
     <h2>Subir Archivos</h2>
     
@@ -23,31 +21,27 @@
             <legend> Datos </legend>
                 <p>
                     Seleccione Usuario:
-                    <select>
-                        <option value="0">Seleccione    un    Usuario</option>
+                    <select name="users" required style="width: 200px">
                         
                         <?php
 										
                             $query = $mysqli -> query ("SELECT id, firstname, lastname FROM mdlhj_user");
 
-                            while ($valores = mysqli_fetch_array($query)) {
-
-                            echo '<option value="'.$valores[id].'">'.$valores[firstname].'  '.$valores[lastname].'</option>';
-
-                          }
+                            while ($valores = mysqli_fetch_array($query)) 
+                            {
+                                 echo '<option value="'.$valores[id].'">'.$valores[firstname].'  '.$valores[lastname].'</option>';
+                            }
                         ?>
                         
                     </select>
                     
                     <br>
-                    
+                    <br>
                     <input name='uploadedfile' type='file'>
                     <input type='submit' value='Subir archivo'>
                 </p>
         </fieldset>
-    </form>
-    
+    </form>    
 
-</body>
-    
+</body>    
 </html>
