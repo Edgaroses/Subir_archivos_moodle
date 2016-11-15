@@ -38,6 +38,9 @@ function core_myprofile_navigation(core_user\output\myprofile\tree $tree, $user,
     global $CFG, $USER, $DB, $PAGE, $OUTPUT;
 
     $usercontext = context_user::instance($user->id, MUST_EXIST);
+	
+	$usercontexto = context_user::instance($USER->id, MUST_EXIST);
+	
     $systemcontext = context_system::instance();
     $courseorusercontext = !empty($course) ? context_course::instance($course->id) : $usercontext;
     $courseorsystemcontext = !empty($course) ? context_course::instance($course->id) : $systemcontext;
@@ -440,52 +443,124 @@ function core_myprofile_navigation(core_user\output\myprofile\tree $tree, $user,
 
 ////////////////////////////////////////CÓDIGO PARA MOSTRAR LOS ARCHIVOS DE CADA USUARIO/////////////////////////////////////////
 
+
+
 //Creo la variable $user_id para ser utilizada en la query************************************
 $user_id = $user->id;
 
 $link = mysqli_connect("localhost","root","","bnexcl_moodle");//REALIZA LA CONEXION 
 $sql = "select * from mdlhj_pruebas where id_usuario='".$user_id."'"; 
 $tildes = $link->query("SET NAMES 'utf8'"); //Para que se muestren las tildes
-
 $result = mysqli_query($link, $sql);
 
-//Smysqli_data_seek ($result, 0); 
-//$extraido= mysqli_fetch_array($result);//LA VARIABLE $extraido GUARDA LOS REGISTROS DE LA CONSULTA REALIZADA
-?>
-<html>
-	<br>
-	<br>
-	<h4> Pruebas Corregidas</h4>
-</html>
+// declaro la variable global $USER para obtener el id del usuario "logeado"
+global $USER;
+$iduser = $USER->id;
+
+//obtengo la página para recargarla con "action"
+$pagina =  $_SERVER['PHP_SELF'];
 
 
-<?php
-
-echo "
-	<table class='table table-striped' border = 1 cellspacing = 6 cellpadding = 1>
-		<tr>
-			<th>ID Prueba</th>
-			<th>ID Usuario</th>
-			<th>Ruta Archivo</th>
-			<th>Nombre Archivo</th>
-		</tr>";
-while($row = mysqli_fetch_array($result)){
+If ($iduser == "2")
+{
+	
 	echo "
-		<tr>
-			<td>".$row[0]."</td>
-			<td>".$row[1]."</td>
-			<td>".$row[2]."</td>
-			<td><a href='../subir_archivos/".$row[2]."'>".$row[3]."</a></td>
-		</tr>";
-}
-echo "</table>";
+		<head>
+			<meta http-equiv='Content-Type' content='text/html; charset=windows-1252'>
+			<title>Subir archivos al servidor</title>     
+			<style type='text/css' media='screen'>
+				body{font-size:1.0em;}
+			</style>
+            
+		</head> 
+		<body>
+		
+		<div>
+		
+		<form enctype='multipart/form-data' action='../subir_archivos/php_subir.php' method='post'>
+			<fieldset>
+					<input name='pagina' type='text' value='".$pagina."' style='visibility:hidden'>
+					<input name='user_id' type='text' value='".$user_id."' style='visibility:hidden'>
+					<p>	
+						<h4>Subir Archivos</h4>
+						<input name='uploadedfile' type='file'>
+						<input type='submit' value='Subir archivo'>
+						
+					</p>
+			</fieldset>
+		</form>    
+		</div>
+
+		
+			
+		<br>
+		<br>	
+			
+		";	
+} 
+
+
+
+
+echo "<h4> Pruebas Corregidas</h4>";
+
+if ($iduser == "2")
+	{
+		echo "
+			<table class='table table-striped' border = 1 cellspacing = 6 cellpadding = 1>
+				<tr>
+					<th>Nombre Archivo</th>
+					<th>Fecha</th>
+					<th>Editar</th>
+				</tr>";
+		while($row = mysqli_fetch_array($result)){
+			
+			$id_prueba = $row[0]; 
+			echo "			
+				<form enctype='multipart/form-data' action='../subir_archivos/eliminar.php' method='post'>
+					<input name='id_prueba' type='text' value='".$id_prueba."' style='visibility:hidden'>
+					<tr>
+						<input name='pagina' type='text' value='".$pagina."' style='visibility:hidden'>
+						<td><a href='../subir_archivos/".$row[2]."'>".$row[3]."</a></td>
+						<td>".$row[4]."</td>
+						<td> <button href='../subir_archivos/eliminar.php'> Eliminar</button> </td>
+						
+					</tr>
+				</form>
+				";
+		}
+		echo "</table>";
+		
+
+	}
+	else {
+		echo "
+			<table class='table table-striped' border = 1 cellspacing = 6 cellpadding = 1>
+				<tr>
+					<th>Nombre Archivo</th>
+					<th>Fecha</th>
+				</tr>";
+		while($row = mysqli_fetch_array($result)){
+			echo "
+				<tr>
+					<td><a href='../subir_archivos/".$row[2]."'>".$row[3]."</a></td>
+					<td>".$row[4]."</td>
+				</tr>";
+		}
+		echo "</table>";
+	}
+
+	if (isset($_POST[eliminar]))
+		{
+		echo "borrar seleecionado";
+		}
 
 ?>
 
 <html>
 <br>
 <br>
-<br>
+
 </html>
 
 
