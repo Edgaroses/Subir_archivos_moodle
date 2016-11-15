@@ -523,7 +523,7 @@ if ($iduser == "2")
 						<input name='pagina' type='text' value='".$pagina."' style='visibility:hidden'>
 						<td><a href='../subir_archivos/".$row[2]."'>".$row[3]."</a></td>
 						<td>".$row[4]."</td>
-						<td> <button href='../subir_archivos/eliminar.php'> Eliminar</button> </td>
+						<td> <button class='mult_submit' type='submit' value='eliminar' tittle='eliminar'> Eliminar </button></td>
 						
 					</tr>
 				</form>
@@ -552,9 +552,11 @@ if ($iduser == "2")
 
 	if (isset($_POST[eliminar]))
 		{
-		echo "borrar seleecionado";
+		echo "borrar seleccionado";
 		}
 
+		
+		
 ?>
 
 <html>

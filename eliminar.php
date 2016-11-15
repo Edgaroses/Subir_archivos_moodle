@@ -12,13 +12,7 @@
 		$sql1="DELETE FROM mdlhj_pruebas WHERE id_prueba=$id_prueba"; 
 			   
 		if(mysqli_query($mysqli,$sql1))
-		{ 
-		    echo "El archivo fue eliminado";
-			echo "
-				<form method='GET' action='".$pagina."'>
-					<button type='submit'> Volver al Perfil</button>
-				</form>
-				";
+		{ echo "";
 		}else{ 
 				print "<br>. Existe un error en la query name='SQL1'<br>"; 
 				print "<i>Error:</i> ". mysqli_error($mysqli)." <i>Código:</i> ".mysqli_errno($mysqli) ; 
@@ -27,6 +21,7 @@
             
            
         
-
+	
+	header('Location: '.$pagina);
 ?>
 
